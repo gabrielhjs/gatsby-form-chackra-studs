@@ -6,6 +6,40 @@ const questionnaire: Fhir.Questionnaire = {
   status: 'draft',
   item: [
     {
+      text: 'Item 0',
+      type: 'choice',
+      linkId: '4017470748703',
+      repeats: true,
+      required: false,
+      readOnly: false,
+      answerOption: [
+        {
+          valueCoding: {
+            code: '1asd',
+            display: 'gabriel',
+          },
+        },
+        {
+          valueCoding: {
+            code: '2',
+            display: 'elanan',
+          },
+        },
+        {
+          valueCoding: {
+            code: '3',
+            display: 'paulo',
+          },
+        },
+        {
+          valueCoding: {
+            code: '4',
+            display: 'karlos',
+          },
+        },
+      ],
+    },
+    {
       text: 'Question 1',
       type: 'string',
       linkId: '1',
@@ -58,29 +92,7 @@ const questionnaire: Fhir.Questionnaire = {
       linkId: '9346027484122',
       item: [
         {
-          type: 'decimal',
-          code: [
-            {
-              system: 'http://loinc.org',
-              code: '2710-2',
-              display: 'SaO2 % BldC Oximetry',
-            },
-          ],
-          extension: [
-            {
-              url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
-              valueCoding: {
-                code: '%',
-                system: 'http://unitsofmeasure.org',
-              },
-            },
-          ],
-          required: false,
-          linkId: '/2710-2',
-          text: 'SaO2 % BldC Oximetry',
-        },
-        {
-          type: 'quantity',
+          type: 'date',
           code: [
             {
               system: 'http://loinc.org',
@@ -133,257 +145,136 @@ const questionnaire: Fhir.Questionnaire = {
           ],
         },
         {
-          type: 'decimal',
+          type: 'group',
           code: [
             {
-              system: 'http://loinc.org',
-              code: '8287-5',
-              display: 'Head Circumf OFC by Tape measure',
-            },
-          ],
-          extension: [
-            {
-              url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
-              valueCoding: {
-                code: 'cm',
-                system: 'http://unitsofmeasure.org',
-              },
+              code: '2',
+              display: 'Weight change',
             },
           ],
           required: false,
-          linkId: '/8287-5',
-          text: 'Head Circumf OFC by Tape measure',
-        },
-        {
-          type: 'quantity',
-          code: [
+          text: 'Sinais vitais',
+          linkId: '9346027484122',
+          item: [
             {
-              system: 'http://loinc.org',
-              code: '8302-2',
-              display: 'Bdy height',
+              type: 'decimal',
+              code: [
+                {
+                  system: 'http://loinc.org',
+                  code: '8480-6',
+                  display: 'BP sys',
+                },
+              ],
+              extension: [
+                {
+                  url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
+                  valueCoding: {
+                    code: 'mm[Hg]',
+                    system: 'http://unitsofmeasure.org',
+                  },
+                },
+              ],
+              required: false,
+              linkId: '/8480-6',
+              text: 'BP sys',
+            },
+            {
+              type: 'decimal',
+              code: [
+                {
+                  system: 'http://loinc.org',
+                  code: '8867-4',
+                  display: 'Heart rate',
+                },
+              ],
+              extension: [
+                {
+                  url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
+                  valueCoding: {
+                    code: '{beats}/min',
+                    system: 'http://unitsofmeasure.org',
+                  },
+                },
+              ],
+              required: false,
+              linkId: '/8867-4',
+              text: 'Heart rate',
+            },
+            {
+              type: 'decimal',
+              code: [
+                {
+                  system: 'http://loinc.org',
+                  code: '9279-1',
+                  display: 'Resp rate',
+                },
+              ],
+              extension: [
+                {
+                  url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
+                  valueCoding: {
+                    code: '{breaths}/min',
+                    system: 'http://unitsofmeasure.org',
+                  },
+                },
+              ],
+              required: false,
+              linkId: '/9279-1',
+              text: 'Resp rate',
+            },
+            {
+              type: 'decimal',
+              code: [
+                {
+                  system: 'http://loinc.org',
+                  code: '3140-1',
+                  display: 'BSA Derived',
+                },
+              ],
+              extension: [
+                {
+                  url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
+                  valueCoding: {
+                    code: 'm2',
+                    system: 'http://unitsofmeasure.org',
+                  },
+                },
+              ],
+              required: false,
+              linkId: '/3140-1',
+              text: 'BSA Derived',
+            },
+            {
+              type: 'decimal',
+              code: [
+                {
+                  system: 'http://loinc.org',
+                  code: '39156-5',
+                  display: 'BMI',
+                },
+              ],
+              extension: [
+                {
+                  url: 'http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression',
+                  valueExpression: {
+                    description: 'BMI calculation',
+                    language: 'text/fhirpath',
+                    expression: '((%weight/%height/%height*10 +0.5) div 1)/10',
+                  },
+                },
+                {
+                  url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
+                  valueCoding: {
+                    code: 'kg/m2',
+                    system: 'http://unitsofmeasure.org',
+                  },
+                },
+              ],
+              required: false,
+              linkId: '/39156-5',
+              text: 'BMI',
             },
           ],
-          extension: [
-            {
-              url: 'http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationLinkPeriod',
-              valueDuration: {
-                value: 1,
-                unit: 'year',
-                system: 'http://ucum.org',
-                code: 'a',
-              },
-            },
-            {
-              url: 'http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-observationExtract',
-              valueBoolean: true,
-            },
-            {
-              url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unitOption',
-              valueCoding: {
-                code: '[in_i]',
-                display: 'inches',
-                system: 'http://unitsofmeasure.org',
-              },
-            },
-            {
-              url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unitOption',
-              valueCoding: {
-                code: '[ft_i]',
-                display: 'feet',
-                system: 'http://unitsofmeasure.org',
-              },
-            },
-            {
-              url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unitOption',
-              valueCoding: {
-                code: 'cm',
-                display: 'centimeters',
-                system: 'http://unitsofmeasure.org',
-              },
-            },
-            {
-              url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unitOption',
-              valueCoding: {
-                code: 'm',
-                display: 'meters',
-                system: 'http://unitsofmeasure.org',
-              },
-            },
-          ],
-          required: false,
-          linkId: '/8302-2',
-          text: 'Bdy height',
-          initial: [
-            {
-              valueQuantity: {
-                unit: 'inches',
-                code: '[in_i]',
-                system: 'http://unitsofmeasure.org',
-              },
-            },
-          ],
-        },
-        {
-          type: 'decimal',
-          code: [
-            {
-              system: 'http://loinc.org',
-              code: '8310-5',
-              display: 'Body temperature',
-            },
-          ],
-          extension: [
-            {
-              url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
-              valueCoding: {
-                code: 'Cel',
-                system: 'http://unitsofmeasure.org',
-              },
-            },
-          ],
-          required: false,
-          linkId: '/8310-5',
-          text: 'Body temperature',
-        },
-        {
-          type: 'decimal',
-          code: [
-            {
-              system: 'http://loinc.org',
-              code: '8462-4',
-              display: 'BP dias',
-            },
-          ],
-          extension: [
-            {
-              url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
-              valueCoding: {
-                code: 'mm[Hg]',
-                system: 'http://unitsofmeasure.org',
-              },
-            },
-          ],
-          required: false,
-          linkId: '/8462-4',
-          text: 'BP dias',
-        },
-        {
-          type: 'decimal',
-          code: [
-            {
-              system: 'http://loinc.org',
-              code: '8480-6',
-              display: 'BP sys',
-            },
-          ],
-          extension: [
-            {
-              url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
-              valueCoding: {
-                code: 'mm[Hg]',
-                system: 'http://unitsofmeasure.org',
-              },
-            },
-          ],
-          required: false,
-          linkId: '/8480-6',
-          text: 'BP sys',
-        },
-        {
-          type: 'decimal',
-          code: [
-            {
-              system: 'http://loinc.org',
-              code: '8867-4',
-              display: 'Heart rate',
-            },
-          ],
-          extension: [
-            {
-              url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
-              valueCoding: {
-                code: '{beats}/min',
-                system: 'http://unitsofmeasure.org',
-              },
-            },
-          ],
-          required: false,
-          linkId: '/8867-4',
-          text: 'Heart rate',
-        },
-        {
-          type: 'decimal',
-          code: [
-            {
-              system: 'http://loinc.org',
-              code: '9279-1',
-              display: 'Resp rate',
-            },
-          ],
-          extension: [
-            {
-              url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
-              valueCoding: {
-                code: '{breaths}/min',
-                system: 'http://unitsofmeasure.org',
-              },
-            },
-          ],
-          required: false,
-          linkId: '/9279-1',
-          text: 'Resp rate',
-        },
-        {
-          type: 'decimal',
-          code: [
-            {
-              system: 'http://loinc.org',
-              code: '3140-1',
-              display: 'BSA Derived',
-            },
-          ],
-          extension: [
-            {
-              url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
-              valueCoding: {
-                code: 'm2',
-                system: 'http://unitsofmeasure.org',
-              },
-            },
-          ],
-          required: false,
-          linkId: '/3140-1',
-          text: 'BSA Derived',
-        },
-        {
-          type: 'decimal',
-          code: [
-            {
-              system: 'http://loinc.org',
-              code: '39156-5',
-              display: 'BMI',
-            },
-          ],
-          extension: [
-            {
-              url: 'http://hl7.org/fhir/uv/sdc/StructureDefinition/sdc-questionnaire-calculatedExpression',
-              valueExpression: {
-                description: 'BMI calculation',
-                language: 'text/fhirpath',
-                expression: '((%weight/%height/%height*10 +0.5) div 1)/10',
-              },
-            },
-            {
-              url: 'http://hl7.org/fhir/StructureDefinition/questionnaire-unit',
-              valueCoding: {
-                code: 'kg/m2',
-                system: 'http://unitsofmeasure.org',
-              },
-            },
-          ],
-          required: false,
-          linkId: '/39156-5',
-          text: 'BMI',
         },
       ],
     },

@@ -4,14 +4,14 @@ import { useSelector } from 'react-redux';
 import Fhir from 'fhir/r4';
 
 const Review = () => {
-  const answers = useSelector<
+  const questionnaireResponse = useSelector<
     Fhir.QuestionnaireResponse,
-    Fhir.QuestionnaireResponseItem[]
-  >((state) => state.item!);
+    Fhir.QuestionnaireResponse
+  >((state) => state);
 
   return (
     <Box width={'80%'} mt={2} alignSelf={'center'}>
-      {JSON.stringify(answers, null, 2)}
+      <pre>{JSON.stringify(questionnaireResponse, null, 2)}</pre>
       <Button>Enviar</Button>
     </Box>
   );
