@@ -1,14 +1,18 @@
-import * as React from "react"
-import { HeadFC } from "gatsby"
+import React from 'react';
+import { HeadFC } from 'gatsby';
+import { Center, CSSReset, Text } from '@chakra-ui/react';
 
 const NotFoundPage = () => {
   return (
-    <main>
-      <h1>Page not found</h1>
-    </main>
-  )
-}
+    <>
+      <CSSReset />
+      <Center height={'100vh'}>
+        <Text fontSize={200}>404</Text>
+      </Center>
+    </>
+  );
+};
 
-export default NotFoundPage
+export default NotFoundPage;
 
-export const Head: HeadFC = () => <title>Not found</title>
+export const Head: HeadFC = () => <title>Not found</title>;
