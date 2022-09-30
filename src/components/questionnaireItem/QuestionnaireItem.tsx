@@ -1,11 +1,12 @@
 import React from 'react';
 import Fhir from 'fhir/r4';
-import { Alert, AlertIcon, FormLabel } from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, FormLabel } from '@chakra-ui/react';
 
 import DateQuestionnaireItem from './DateQuestionnaireItem';
 import StringQuestionnaireItem from './StringQuestionnaireItem';
 import DecimalQuestionnaireItem from './DecimalQuestionnaireItem';
-import QuantityQuestionnaireItem from './QuantityQuestionnaireItem';
+import RadioQuestionnaireItem from './RadioQuestionnaireItem';
+import CheckboxQuestionnaireItem from './CheckboxQuestionnaireItem';
 
 export type TQuestionnaireItem = {
   questionnaireItem: Fhir.QuestionnaireItem;
@@ -19,7 +20,7 @@ const SwitchQuestionnaireItemType = ({
       return (
         <StringQuestionnaireItem
           linkId={questionnaireItem.linkId}
-          initial={questionnaireItem.initial}
+          text={questionnaireItem.text}
           type='string'
         />
       );
@@ -38,7 +39,7 @@ const SwitchQuestionnaireItemType = ({
       return (
         <DateQuestionnaireItem
           linkId={questionnaireItem.linkId}
-          initial={questionnaireItem.initial}
+          text={questionnaireItem.text}
           type='date'
         />
       );
@@ -46,22 +47,31 @@ const SwitchQuestionnaireItemType = ({
       return (
         <DecimalQuestionnaireItem
           linkId={questionnaireItem.linkId}
-          initial={questionnaireItem.initial}
+          text={questionnaireItem.text}
+          extension={questionnaireItem.extension}
           type='decimal'
         />
       );
-    case 'quantity':
-      return (
-        <QuantityQuestionnaireItem
+    case 'choice':
+      return questionnaireItem.repeats ? (
+        <CheckboxQuestionnaireItem
           linkId={questionnaireItem.linkId}
-          initial={questionnaireItem.initial}
-          type='quantity'
+          text={questionnaireItem.text}
+          answerOption={questionnaireItem.answerOption}
+          type='choice'
+        />
+      ) : (
+        <RadioQuestionnaireItem
+          linkId={questionnaireItem.linkId}
+          text={questionnaireItem.text}
+          answerOption={questionnaireItem.answerOption}
+          type='choice'
         />
       );
     default:
       console.log(`type: (${questionnaireItem.type}) not implemented`);
       return (
-        <Alert status='warning'>
+        <Alert status='error'>
           <AlertIcon />
           Answer type ({questionnaireItem.type}) not implemented
         </Alert>
@@ -71,14 +81,14 @@ const SwitchQuestionnaireItemType = ({
 
 const QuestionnaireItem = ({ questionnaireItem }: TQuestionnaireItem) => {
   return (
-    <>
+    <Box>
       <FormLabel>
         {questionnaireItem.type !== 'group'
           ? questionnaireItem.text
           : undefined}
       </FormLabel>
       <SwitchQuestionnaireItemType questionnaireItem={questionnaireItem} />
-    </>
+    </Box>
   );
 };
 

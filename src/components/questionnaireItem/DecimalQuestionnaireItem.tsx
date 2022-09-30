@@ -1,27 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Fhir from 'fhir/r4';
 import {
-  NumberDecrementStepper,
-  NumberIncrementStepper,
+  InputGroup,
+  InputRightAddon,
   NumberInput,
   NumberInputField,
-  NumberInputStepper,
 } from '@chakra-ui/react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  upsertQuestionnaireResponseItem,
-  QuestionnaireResponseStateType,
-} from '../../state/QuestionnaireResponseReducer';
+import { useDispatch } from 'react-redux';
+import { upsertQuestionnaireResponseItem } from '../../state/QuestionnaireResponseReducer';
+import { getItemAnswer } from './utils/getItemAnswer';
 
 const DecimalQuestionnaireItem = ({
   linkId,
-  initial,
+  text,
+  extension,
 }: Fhir.QuestionnaireItem) => {
-  const questionnaireResponseItemAnswer = useSelector(
-    (state: QuestionnaireResponseStateType) =>
-      state.item?.find((item) => item.linkId === linkId)?.answer?.[0]
-        .valueDecimal ?? initial?.[0].valueDecimal
-  );
+  const questionnaireResponseItemAnswer = getItemAnswer(linkId);
 
   const dispatch = useDispatch();
 
@@ -30,7 +24,7 @@ const DecimalQuestionnaireItem = ({
     dispatch(
       upsertQuestionnaireResponseItem({
         linkId: linkId,
-        text: 'asdfsfdsf',
+        text,
         answer: [
           {
             valueDecimal: Number(value),
@@ -40,9 +34,19 @@ const DecimalQuestionnaireItem = ({
     );
   };
 
+  const unit = extension?.find((item) => !!item.valueCoding)?.valueCoding?.code;
+
   return (
-    <NumberInput value={questionnaireResponseItemAnswer}>
-      <NumberInputField name={linkId} type='number' onChange={changeHandler} />
+    <NumberInput value={questionnaireResponseItemAnswer?.[0].valueDecimal}>
+      <InputGroup>
+        <NumberInputField
+          name={linkId}
+          type='number'
+          onChange={changeHandler}
+          borderRightRadius={0}
+        />
+        {unit ? <InputRightAddon children={unit} /> : undefined}
+      </InputGroup>
     </NumberInput>
   );
 };

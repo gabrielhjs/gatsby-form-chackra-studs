@@ -1,21 +1,12 @@
 import React from 'react';
 import Fhir from 'fhir/r4';
 import { Input } from '@chakra-ui/react';
-import {
-  QuestionnaireResponseStateType,
-  upsertQuestionnaireResponseItem,
-} from '../../state/QuestionnaireResponseReducer';
-import { useDispatch, useSelector } from 'react-redux';
+import { upsertQuestionnaireResponseItem } from '../../state/QuestionnaireResponseReducer';
+import { useDispatch } from 'react-redux';
+import { getItemAnswer } from './utils/getItemAnswer';
 
-const StringQuestionnaireItem = ({
-  linkId,
-  initial,
-}: Fhir.QuestionnaireItem) => {
-  const initialValue = useSelector(
-    (state: QuestionnaireResponseStateType) =>
-      state.item?.find((item) => item.linkId === linkId)?.answer?.[0]
-        .valueString ?? initial?.[0].valueString
-  );
+const StringQuestionnaireItem = ({ linkId, text }: Fhir.QuestionnaireItem) => {
+  const questionnaireResponseItemAnswer = getItemAnswer(linkId);
 
   const dispatch = useDispatch();
 
@@ -24,7 +15,7 @@ const StringQuestionnaireItem = ({
     dispatch(
       upsertQuestionnaireResponseItem({
         linkId: linkId,
-        text: 'asdfsfdsf',
+        text,
         answer: [
           {
             valueString: value,
@@ -33,12 +24,12 @@ const StringQuestionnaireItem = ({
       })
     );
   };
+
   return (
     <Input
       name={linkId}
-      variant='flushed'
       onChange={changeHandler}
-      value={initialValue}
+      value={questionnaireResponseItemAnswer?.[0].valueString}
     />
   );
 };

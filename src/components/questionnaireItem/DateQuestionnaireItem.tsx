@@ -1,24 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Fhir from 'fhir/r4';
 import { Input } from '@chakra-ui/react';
+import { getItemAnswer } from './utils/getItemAnswer';
+import { upsertQuestionnaireResponseItem } from '../../state/QuestionnaireResponseReducer';
+import { useDispatch } from 'react-redux';
 
-const DateQuestionnaireItem = ({ linkId, initial }: Fhir.QuestionnaireItem) => {
-  const [questionnaireResponseItemAnswer, setQuestionnaireResponseItemAnswer] =
-    useState<Fhir.QuestionnaireResponseItemAnswer>({
-      valueString: initial?.[0].valueDate,
-    });
+const DateQuestionnaireItem = ({ linkId, text }: Fhir.QuestionnaireItem) => {
+  const questionnaireResponseItemAnswer = getItemAnswer(linkId);
+  const dispatch = useDispatch();
+
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    dispatch(
+      upsertQuestionnaireResponseItem({
+        linkId: linkId,
+        text,
+        answer: [
+          {
+            valueDate: value,
+          },
+        ],
+      })
+    );
+  };
 
   return (
     <Input
       name={linkId}
       variant='flushed'
       type='date'
-      onChange={(event) => {
-        setQuestionnaireResponseItemAnswer({
-          valueDate: event.target.value,
-        });
-      }}
-      value={questionnaireResponseItemAnswer.valueString}
+      onChange={changeHandler}
+      value={questionnaireResponseItemAnswer?.[0].valueDate}
     />
   );
 };
